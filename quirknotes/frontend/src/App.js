@@ -38,8 +38,6 @@ function App() {
   }, []);
 
   const deleteNote = async (entry) => {
-    setLoading(true);
-
     try {
         await fetch(`http://localhost:4000/deleteNote/${entry._id}`,
             {method: "DELETE",
@@ -58,14 +56,10 @@ function App() {
     } catch (error) {
         console.log("Fetch function failed:", error);
         alert('Unable to delete note due to server errors');
-    } finally {
-      setLoading(false);
     }
   };
 
   const deleteAllNotes = async () => {
-    setLoading(true);
-
     try {
         await fetch('http://localhost:4000/deleteAllNotes',
             {method: "DELETE",
@@ -84,8 +78,6 @@ function App() {
     } catch (error) {
         console.log("Fetch function failed:", error);
         alert('Unable to delete all notes due to server errors');
-    } finally {
-      setLoading(false);
     }
   };
 
