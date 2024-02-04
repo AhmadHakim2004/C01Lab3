@@ -52,7 +52,7 @@ function App() {
                 alert('Unable to delete note due to server errors');
             } else {
                 deleteNoteState(entry._id);
-                alert('Note deleted successfully');
+                console.log('Note deleted successfully');
             }
         })
     } catch (error) {
