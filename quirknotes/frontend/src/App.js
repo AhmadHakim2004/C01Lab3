@@ -37,8 +37,30 @@ function App() {
     getNotes();
   }, []);
 
-  const deleteNote = (entry) => {
-    // Code for DELETE here
+  const deleteNote = async (entry) => {
+    setLoading(true);
+
+    try {
+        await fetch(`http://localhost:4000/deleteNote/${entry._id}`,
+            {method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }})
+        .then(async (response) => {
+            if (!response.ok) {
+                console.log("Served failed:", response.status);
+                alert('Unable to delete note due to server errors');
+            } else {
+                deleteNoteState(entry._id);
+                alert('Note deleted successfully');
+            }
+        })
+    } catch (error) {
+        console.log("Fetch function failed:", error);
+        alert('Unable to delete note due to server errors');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteAllNotes = () => {
@@ -70,9 +92,9 @@ function App() {
     setNotes((prevNotes) => [...prevNotes, { _id, title, content }]);
   };
 
-  const deleteNoteState = () => {
-    // Code for modifying state after DELETE here
-  };
+  const deleteNoteState = (_id) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note._id !== _id));
+  }
 
   const deleteAllNotesState = () => {
     // Code for modifying state after DELETE all here
