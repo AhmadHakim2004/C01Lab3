@@ -63,8 +63,30 @@ function App() {
     }
   };
 
-  const deleteAllNotes = () => {
-    // Code for DELETE all notes here
+  const deleteAllNotes = async () => {
+    setLoading(true);
+
+    try {
+        await fetch('http://localhost:4000/deleteAllNotes',
+            {method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }})
+        .then(async (response) => {
+            if (!response.ok) {
+                console.log("Served failed:", response.status);
+                alert('Unable to delete all notes due to server errors');
+            } else {
+                deleteAllNotesState();
+                console.log('All Notes deleted successfully');
+            }
+        })
+    } catch (error) {
+        console.log("Fetch function failed:", error);
+        alert('Unable to delete all notes due to server errors');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // -- Dialog functions --
@@ -97,7 +119,7 @@ function App() {
   }
 
   const deleteAllNotesState = () => {
-    // Code for modifying state after DELETE all here
+    setNotes([]);
   };
 
   const patchNoteState = (_id, title, content) => {
